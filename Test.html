@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design-Nachbildung</title>
+    <title>PDF-Generator mit Design</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -16,46 +17,106 @@
         }
         .container {
             background: linear-gradient(45deg, #ff9800, #ff5722);
-            padding: 40px;
-            border-radius: 20px;
+            padding: 30px;
+            border-radius: 15px;
             text-align: center;
             color: white;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 350px;
         }
-        .title {
-            font-size: 28px;
+        label {
             font-weight: bold;
-            margin-bottom: 10px;
+            display: block;
+            margin-top: 10px;
         }
-        .subtitle {
-            font-size: 18px;
-            margin-bottom: 20px;
-            font-style: italic;
+        input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 90%;
         }
         .button {
             background-color: white;
             color: #ff5722;
-            padding: 10px 20px;
+            padding: 10px 15px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
+            margin-top: 20px;
             transition: 0.3s;
         }
         .button:hover {
             background-color: #ffcc80;
-            color: #fff;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <div class="title">Willkommen zu meinem Design</div>
-        <div class="subtitle">Eine stilvolle Nachbildung mit HTML & CSS</div>
-        <button class="button">Mehr erfahren</button>
+        <h1>🎨 Steckbrief erstellen</h1>
+        <form id="pdfForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="quote">Spruch:</label>
+            <input type="text" id="quote" required>
+
+            <label for="image">Bild hochladen:</label>
+            <input type="file" id="image" accept="image/*">
+
+            <button type="button" class="button" onclick="generatePDF()">📜 PDF erstellen</button>
+        </form>
     </div>
+
+    <script>
+        function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const name = document.getElementById("name").value;
+            const quote = document.getElementById("quote").value;
+            const imageInput = document.getElementById("image");
+
+            // Hintergrundfarbe der PDF anpassen
+            doc.setFillColor(255, 152, 0);
+            doc.rect(10, 10, 180, 80, 'F');
+
+            // Titel für die PDF
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(22);
+            doc.setTextColor(255, 255, 255);
+            doc.text("Über mich", 20, 30);
+
+            // Name als Textfeld
+            doc.setFontSize(18);
+            doc.setTextColor(33, 150, 243);
+            doc.text(name, 20, 50);
+
+            // Spruch mit automatischem Umbruch
+            doc.setFontSize(16);
+            doc.setTextColor(76, 175, 80);
+            const wrappedQuote = doc.splitTextToSize(`"${quote}"`, 160);
+            doc.text(wrappedQuote, 20, 70);
+
+            // Bild wird falls vorhanden eingebunden
+            if (imageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const imgData = event.target.result;
+                    doc.addImage(imgData, 'PNG', 110, 85, 70, 70);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.rect(109, 84, 72, 72);
+
+                    doc.save("steckbrief.pdf");
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                doc.save("steckbrief.pdf");
+            }
+        }
+    </script>
 
 </body>
 </html>
