@@ -4,7 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body style="text-align: center; font-family: Arial, sans-serif;">
-    <h1 style="color: #ff5722;">🚀 Steckbrief-Generator</h1>
+    <h1 style="color: #ff9800;">🚀 Steckbrief-Generator</h1>
     <form id="pdfForm">
         <label for="name"><strong>Name:</strong></label>
         <input type="text" id="name"><br><br>
@@ -16,8 +16,8 @@
         <input type="file" id="image" accept="image/*"><br><br>
 
         <button type="button" onclick="generatePDF()" 
-                style="background-color: #ff5722; color: white; padding: 10px; border: none; cursor: pointer;">
-            🌟 Steckbrief erstellen
+                style="background-color: #ff9800; color: white; padding: 12px; border: none; cursor: pointer;">
+            ✨ Steckbrief erstellen
         </button>
     </form>
 
@@ -30,35 +30,45 @@
             const quote = document.getElementById("quote").value;
             const imageInput = document.getElementById("image");
 
-            // "Über mich" als Hauptüberschrift
+            // "Über mich" als Hauptüberschrift für ein klares Design
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(24);
-            doc.setTextColor(255, 87, 34);
+            doc.setFontSize(26);
+            doc.setTextColor(255, 152, 0);
             doc.text("Über mich", 20, 20);
 
-            // Linie für saubere Trennung
-            doc.setDrawColor(255, 87, 34);
-            doc.line(10, 25, 200, 25);
+            // Linie für klare Struktur
+            doc.setDrawColor(255, 152, 0);
+            doc.line(10, 26, 200, 26);
 
-            // Name direkt darunter
-            doc.setFontSize(20);
-            doc.setTextColor(33, 150, 243);
-            doc.text(name, 20, 40);
+            // Name mit optimaler Platzierung und Farbe
+            doc.setFontSize(22);
+            doc.setTextColor(41, 128, 185);
+            doc.text(name, 20, 45);
 
-            // Bild mittig rechts mit verkleinertem Abstand zum Spruch
+            // Bild perfekt eingebunden mit abgerundetem Rahmen
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
-                    doc.addImage(imgData, 'PNG', 120, 70, 70, 70);
-                    doc.setDrawColor(0, 0, 0);
-                    doc.rect(119, 69, 72, 72); // Rahmen für das Bild
-                    doc.text(quote, 20, 160); // Spruch näher am Bild
+                    doc.addImage(imgData, 'PNG', 110, 60, 75, 75);
+                    doc.setDrawColor(41, 128, 185);
+                    doc.rect(109, 59, 77, 77, "S"); // Abgerundete Ecken
+
+                    // Spruch näher am Bild für eine harmonische Platzierung
+                    doc.setFontSize(18);
+                    doc.setTextColor(76, 175, 80);
+                    const wrappedQuote = doc.splitTextToSize(quote, 100);
+                    doc.text(wrappedQuote, 20, 150);
+
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
-                doc.text(quote, 20, 160); // Spruch bleibt nah an der oberen Sektion
+                doc.setFontSize(18);
+                doc.setTextColor(76, 175, 80);
+                const wrappedQuote = doc.splitTextToSize(quote, 100);
+                doc.text(wrappedQuote, 20, 150);
+
                 doc.save("steckbrief.pdf");
             }
         }
