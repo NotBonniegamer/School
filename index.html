@@ -30,38 +30,35 @@
             const quote = document.getElementById("quote").value;
             const imageInput = document.getElementById("image");
 
-            // "Über mich" als markante Überschrift
+            // "Über mich" als Hauptüberschrift
             doc.setFont("helvetica", "bold");
             doc.setFontSize(24);
             doc.setTextColor(255, 87, 34);
             doc.text("Über mich", 20, 20);
 
-            // Linie für klare Struktur
+            // Linie für saubere Trennung
             doc.setDrawColor(255, 87, 34);
             doc.line(10, 25, 200, 25);
 
-            // Name größer & präsenter
+            // Name direkt darunter
             doc.setFontSize(20);
             doc.setTextColor(33, 150, 243);
             doc.text(name, 20, 40);
 
-            // Spruch in stylischer Formatierung unten links
-            doc.setFontSize(18);
-            doc.setTextColor(76, 175, 80);
-            doc.text(`"${quote}"`, 20, 250);
-
-            // Bild bekommt einen Rahmen und wird mittig rechts platziert
+            // Bild mittig rechts mit verkleinertem Abstand zum Spruch
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
                     doc.addImage(imgData, 'PNG', 120, 70, 70, 70);
                     doc.setDrawColor(0, 0, 0);
-                    doc.rect(119, 69, 72, 72); // Rahmen für Bild
+                    doc.rect(119, 69, 72, 72); // Rahmen für das Bild
+                    doc.text(quote, 20, 160); // Spruch näher am Bild
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
+                doc.text(quote, 20, 160); // Spruch bleibt nah an der oberen Sektion
                 doc.save("steckbrief.pdf");
             }
         }
