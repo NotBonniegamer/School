@@ -35,25 +35,25 @@
             const hobbies = document.getElementById("hobbies").value;
             const imageInput = document.getElementById("image");
 
-            // Überschrift
+            // Steckbrief-Titel
             doc.setFont("helvetica", "bold");
             doc.setFontSize(22);
-            doc.text("STECKBRIEF", 70, 20);
+            doc.text("Steckbrief", 70, 20);
 
-            // Persönliche Daten
+            // Persönliche Informationen
             doc.setFontSize(14);
             doc.setFont("helvetica", "normal");
-            doc.text(`👤 Name: ${name}`, 20, 40);
-            doc.text(`💬 Spruch: ${quote}`, 20, 50);
-            doc.text(`🎂 Alter: ${age}`, 20, 60);
-            doc.text(`🏆 Hobbys: ${hobbies}`, 20, 70);
+            doc.text(`Name: ${name}`, 20, 40);
+            doc.text(`Spruch: ${quote}`, 20, 50);
+            doc.text(`Alter: ${age}`, 20, 60);
+            doc.text(`Hobbys: ${hobbies}`, 20, 70);
 
-            // Bild einfügen
+            // Bild hinzufügen
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
-                    doc.addImage(imgData, 'PNG', 20, 80, 80, 80);  // Bildgröße und Position optimiert
+                    doc.addImage(imgData, 'PNG', 20, 80, 80, 80); // Bildgröße & Position angepasst
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
