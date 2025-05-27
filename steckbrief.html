@@ -1,77 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steckbrief PDF-Generator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: linear-gradient(45deg, #ff9800, #ff5722);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            width: 400px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            width: 90%;
+        }
+        textarea {
+            width: 90%;
+            height: 60px;
+            border-radius: 5px;
+            padding: 8px;
+        }
+        .button {
+            background-color: white;
+            color: #ff5722;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+        .button:hover {
+            background-color: #ffcc80;
+        }
+    </style>
 </head>
-<body style="text-align: center; font-family: Arial, sans-serif;">
-    <h1 style="color: #ff9800;">🚀 Steckbrief-Generator</h1>
-    <form id="pdfForm">
-        <label for="name"><strong>Name:</strong></label>
-        <input type="text" id="name"><br><br>
+<body>
 
-        <label for="quote"><strong>Spruch:</strong></label>
-        <input type="text" id="quote"><br><br>
+    <div class="container">
+        <h1>📝 Mein Steckbrief</h1>
+        <form id="pdfForm">
+            <label for="goal">Das möchte ich jetzt schaffen:</label>
+            <textarea id="goal"></textarea>
 
-        <label for="image"><strong>Bild hochladen:</strong></label>
-        <input type="file" id="image" accept="image/*"><br><br>
+            <label for="name">Name:</label>
+            <input type="text" id="name">
 
-        <button type="button" onclick="generatePDF()" 
-                style="background-color: #ff9800; color: white; padding: 12px; border: none; cursor: pointer;">
-            ✨ Steckbrief erstellen
-        </button>
-    </form>
+            <label for="age">Alter:</label>
+            <input type="text" id="age">
+
+            <label for="birthday">Geburtsdatum:</label>
+            <input type="text" id="birthday">
+
+            <label for="location">Wohnort:</label>
+            <input type="text" id="location">
+
+            <label for="happiness">Das macht mich glücklich:</label>
+            <textarea id="happiness"></textarea>
+
+            <label for="biggest_wish">Mein größter Wunsch:</label>
+            <textarea id="biggest_wish"></textarea>
+
+            <label for="favorite_teacher">Lieblings Lehrer:</label>
+            <input type="text" id="favorite_teacher">
+
+            <label for="favorite_place">Mein Lieblingsort:</label>
+            <input type="text" id="favorite_place">
+
+            <label for="future_plan">Das möchte ich machen, wenn ich älter bin:</label>
+            <textarea id="future_plan"></textarea>
+
+            <label for="excited_for">Darauf freue ich mich am meisten:</label>
+            <textarea id="excited_for"></textarea>
+
+            <button type="button" class="button" onclick="generatePDF()">📜 PDF erstellen</button>
+        </form>
+    </div>
 
     <script>
         function generatePDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
 
+            const goal = document.getElementById("goal").value;
             const name = document.getElementById("name").value;
-            const quote = document.getElementById("quote").value;
-            const imageInput = document.getElementById("image");
+            const age = document.getElementById("age").value;
+            const birthday = document.getElementById("birthday").value;
+            const location = document.getElementById("location").value;
+            const happiness = document.getElementById("happiness").value;
+            const biggestWish = document.getElementById("biggest_wish").value;
+            const favoriteTeacher = document.getElementById("favorite_teacher").value;
+            const favoritePlace = document.getElementById("favorite_place").value;
+            const futurePlan = document.getElementById("future_plan").value;
+            const excitedFor = document.getElementById("excited_for").value;
 
-            // "Über mich" als Hauptüberschrift für ein klares Design
+            // Hintergrundgestaltung
+            doc.setFillColor(255, 152, 0);
+            doc.rect(10, 10, 180, 80, 'F');
+
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(26);
-            doc.setTextColor(255, 152, 0);
-            doc.text("Über mich", 20, 20);
-
-            // Linie für klare Struktur
-            doc.setDrawColor(255, 152, 0);
-            doc.line(10, 26, 200, 26);
-
-            // Name mit optimaler Platzierung und Farbe
             doc.setFontSize(22);
-            doc.setTextColor(41, 128, 185);
-            doc.text(name, 20, 45);
+            doc.setTextColor(255, 255, 255);
+            doc.text("📝 Mein Steckbrief", 20, 30);
 
-            // Bild perfekt eingebunden mit abgerundetem Rahmen
-            if (imageInput.files.length > 0) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    const imgData = event.target.result;
-                    doc.addImage(imgData, 'PNG', 110, 60, 75, 75);
-                    doc.setDrawColor(41, 128, 185);
-                    doc.rect(109, 59, 77, 77, "S"); // Abgerundete Ecken
+            // Steckbrief-Inhalte
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text("Das möchte ich jetzt schaffen:", 20, 50);
+            doc.text(goal, 20, 60);
 
-                    // Spruch näher am Bild für eine harmonische Platzierung
-                    doc.setFontSize(18);
-                    doc.setTextColor(76, 175, 80);
-                    const wrappedQuote = doc.splitTextToSize(quote, 100);
-                    doc.text(wrappedQuote, 20, 150);
+            doc.text(`Name: ${name}`, 20, 80);
+            doc.text(`Alter: ${age}`, 20, 90);
+            doc.text(`Geburtsdatum: ${birthday}`, 20, 100);
+            doc.text(`Wohnort: ${location}`, 20, 110);
 
-                    doc.save("steckbrief.pdf");
-                };
-                reader.readAsDataURL(imageInput.files[0]);
-            } else {
-                doc.setFontSize(18);
-                doc.setTextColor(76, 175, 80);
-                const wrappedQuote = doc.splitTextToSize(quote, 100);
-                doc.text(wrappedQuote, 20, 150);
+            doc.text("Das macht mich glücklich:", 20, 130);
+            doc.text(happiness, 20, 140);
 
-                doc.save("steckbrief.pdf");
-            }
+            doc.text("Mein größter Wunsch:", 20, 160);
+            doc.text(biggestWish, 20, 170);
+
+            doc.text("Lieblings Lehrer:", 20, 190);
+            doc.text(favoriteTeacher, 20, 200);
+
+            doc.text("Mein Lieblingsort:", 20, 220);
+            doc.text(favoritePlace, 20, 230);
+
+            doc.text("Das möchte ich machen, wenn ich älter bin:", 20, 250);
+            doc.text(futurePlan, 20, 260);
+
+            doc.text("Darauf freue ich mich am meisten:", 20, 280);
+            doc.text(excitedFor, 20, 290);
+
+            // PDF speichern
+            doc.save("steckbrief.pdf");
         }
     </script>
+
 </body>
 </html>
