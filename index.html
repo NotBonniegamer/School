@@ -3,19 +3,21 @@
 <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
-    <h2>Steckbrief-Generator</h2>
+<body style="text-align: center; font-family: Arial, sans-serif;">
+    <h1 style="color: #0073e6;">🎨 Steckbrief-Generator</h1>
     <form id="pdfForm">
-        <label for="name">Name:</label>
+        <label for="name"><strong>Name:</strong></label>
         <input type="text" id="name"><br><br>
 
-        <label for="quote">Spruch:</label>
+        <label for="quote"><strong>Spruch:</strong></label>
         <input type="text" id="quote"><br><br>
 
-        <label for="image">Bild hochladen:</label>
+        <label for="image"><strong>Bild hochladen:</strong></label>
         <input type="file" id="image" accept="image/*"><br><br>
 
-        <button type="button" onclick="generatePDF()">Steckbrief erstellen</button>
+        <button type="button" onclick="generatePDF()" style="background-color: #0073e6; color: white; padding: 10px; border: none; cursor: pointer;">
+            📜 Steckbrief erstellen
+        </button>
     </form>
 
     <script>
@@ -27,23 +29,31 @@
             const quote = document.getElementById("quote").value;
             const imageInput = document.getElementById("image");
 
-            // Steckbrief-Titel
+            // Stylischer Header
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
-            doc.text("Steckbrief", 70, 20);
+            doc.setFontSize(24);
+            doc.setTextColor(0, 115, 230); // Blaue Akzentfarbe
+            doc.text("STECKBRIEF", 70, 20);
+
+            // Linie für Struktur
+            doc.setDrawColor(0, 115, 230);
+            doc.line(10, 25, 200, 25);
 
             // Persönliche Informationen
-            doc.setFontSize(14);
+            doc.setFontSize(16);
             doc.setFont("helvetica", "normal");
+            doc.setTextColor(0, 0, 0);
             doc.text(`Name: ${name}`, 20, 40);
             doc.text(`Spruch: ${quote}`, 20, 50);
 
-            // Bild hinzufügen
+            // Bild mit Rahmen
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
                     doc.addImage(imgData, 'PNG', 20, 60, 80, 80);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.rect(19, 59, 82, 82); // Rahmen für Bild
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
