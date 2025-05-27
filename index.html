@@ -17,7 +17,7 @@
 
         <button type="button" onclick="generatePDF()" 
                 style="background-color: #ff5722; color: white; padding: 10px; border: none; cursor: pointer;">
-            📜 Steckbrief erstellen
+            🌟 Steckbrief erstellen
         </button>
     </form>
 
@@ -30,38 +30,40 @@
             const quote = document.getElementById("quote").value;
             const imageInput = document.getElementById("image");
 
-            // "Über mich" als Überschrift
+            // "Über mich" als markante Überschrift
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(22);
+            doc.setFontSize(24);
             doc.setTextColor(255, 87, 34);
             doc.text("Über mich", 20, 20);
 
-            // Linie zur Trennung für modernes Design
+            // Linie für klare Struktur
             doc.setDrawColor(255, 87, 34);
             doc.line(10, 25, 200, 25);
 
-            // Name unter der Überschrift
-            doc.setFontSize(18);
-            doc.setTextColor(0, 0, 0);
-            doc.text(name, 20, 35);
+            // Name größer & präsenter
+            doc.setFontSize(20);
+            doc.setTextColor(33, 150, 243);
+            doc.text(name, 20, 40);
 
-            // Bild in der Mitte rechts
+            // Spruch in stylischer Formatierung unten links
+            doc.setFontSize(18);
+            doc.setTextColor(76, 175, 80);
+            doc.text(`"${quote}"`, 20, 250);
+
+            // Bild bekommt einen Rahmen und wird mittig rechts platziert
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
-                    doc.addImage(imgData, 'PNG', 120, 70, 70, 70); // Bildgröße & Position angepasst
+                    doc.addImage(imgData, 'PNG', 120, 70, 70, 70);
+                    doc.setDrawColor(0, 0, 0);
+                    doc.rect(119, 69, 72, 72); // Rahmen für Bild
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
                 doc.save("steckbrief.pdf");
             }
-
-            // Spruch unten links
-            doc.setFontSize(16);
-            doc.setTextColor(0, 150, 136);
-            doc.text(`"${quote}"`, 20, 250);
         }
     </script>
 </body>
