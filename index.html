@@ -4,7 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body style="text-align: center; font-family: Arial, sans-serif;">
-    <h1 style="color: #0073e6;">🎨 Steckbrief-Generator</h1>
+    <h1 style="color: #ff5722;">🚀 Steckbrief-Generator</h1>
     <form id="pdfForm">
         <label for="name"><strong>Name:</strong></label>
         <input type="text" id="name"><br><br>
@@ -15,8 +15,9 @@
         <label for="image"><strong>Bild hochladen:</strong></label>
         <input type="file" id="image" accept="image/*"><br><br>
 
-        <button type="button" onclick="generatePDF()" style="background-color: #0073e6; color: white; padding: 10px; border: none; cursor: pointer;">
-            📜 Steckbrief erstellen
+        <button type="button" onclick="generatePDF()" 
+                style="background-color: #ff5722; color: white; padding: 10px; border: none; cursor: pointer;">
+            🌈 Steckbrief erstellen
         </button>
     </form>
 
@@ -29,31 +30,27 @@
             const quote = document.getElementById("quote").value;
             const imageInput = document.getElementById("image");
 
-            // Stylischer Header
+            // Name oben links
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(24);
-            doc.setTextColor(0, 115, 230); // Blaue Akzentfarbe
-            doc.text("STECKBRIEF", 70, 20);
+            doc.setFontSize(22);
+            doc.setTextColor(255, 87, 34); // Orange-Akzent
+            doc.text(name, 20, 20);
 
-            // Linie für Struktur
-            doc.setDrawColor(0, 115, 230);
+            // Linie zur Trennung für modernes Design
+            doc.setDrawColor(255, 87, 34);
             doc.line(10, 25, 200, 25);
 
-            // Persönliche Informationen
+            // Spruch unten links
             doc.setFontSize(16);
-            doc.setFont("helvetica", "normal");
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Name: ${name}`, 20, 40);
-            doc.text(`Spruch: ${quote}`, 20, 50);
+            doc.setTextColor(0, 150, 136); // Türkis-Akzent
+            doc.text(`"${quote}"`, 20, 260);
 
-            // Bild mit Rahmen
+            // Bild in der Mitte rechts
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
-                    doc.addImage(imgData, 'PNG', 20, 60, 80, 80);
-                    doc.setDrawColor(0, 0, 0);
-                    doc.rect(19, 59, 82, 82); // Rahmen für Bild
+                    doc.addImage(imgData, 'PNG', 120, 100, 70, 70); // Bildgröße & Position angepasst
                     doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
