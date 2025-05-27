@@ -4,7 +4,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
-    <h2>PDF-Generator</h2>
+    <h2>Steckbrief-Generator</h2>
     <form id="pdfForm">
         <label for="name">Name:</label>
         <input type="text" id="name"><br><br>
@@ -12,10 +12,16 @@
         <label for="quote">Spruch:</label>
         <input type="text" id="quote"><br><br>
 
+        <label for="age">Alter:</label>
+        <input type="number" id="age"><br><br>
+
+        <label for="hobbies">Hobbys:</label>
+        <input type="text" id="hobbies"><br><br>
+
         <label for="image">Bild hochladen:</label>
         <input type="file" id="image" accept="image/*"><br><br>
 
-        <button type="button" onclick="generatePDF()">PDF erstellen</button>
+        <button type="button" onclick="generatePDF()">Steckbrief erstellen</button>
     </form>
 
     <script>
@@ -25,26 +31,31 @@
 
             const name = document.getElementById("name").value;
             const quote = document.getElementById("quote").value;
+            const age = document.getElementById("age").value;
+            const hobbies = document.getElementById("hobbies").value;
             const imageInput = document.getElementById("image");
+
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(20);
+            doc.text("STECKBRIEF", 70, 20);
+            
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "normal");
+            doc.text(`👤 Name: ${name}`, 10, 40);
+            doc.text(`💬 Spruch: ${quote}`, 10, 50);
+            doc.text(`🎂 Alter: ${age}`, 10, 60);
+            doc.text(`🏆 Hobbys: ${hobbies}`, 10, 70);
 
             if (imageInput.files.length > 0) {
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const imgData = event.target.result;
-
-                    doc.text(`Name: ${name}`, 10, 20);
-                    doc.text(`Spruch: ${quote}`, 10, 30);
-
-                    // Universelle Bildunterstützung für verschiedene Formate
-                    doc.addImage(imgData, 'PNG', 10, 50, 100, 100);
-
-                    doc.save("dokument.pdf");
+                    doc.addImage(imgData, 'PNG', 10, 80, 50, 50);  // Position und Größe anpassen
+                    doc.save("steckbrief.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
             } else {
-                doc.text(`Name: ${name}`, 10, 20);
-                doc.text(`Spruch: ${quote}`, 10, 30);
-                doc.save("dokument.pdf");
+                doc.save("steckbrief.pdf");
             }
         }
     </script>
