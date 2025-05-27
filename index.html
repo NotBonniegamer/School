@@ -13,7 +13,7 @@
         <input type="text" id="quote"><br><br>
 
         <label for="image">Bild hochladen:</label>
-        <input type="file" id="image"><br><br>
+        <input type="file" id="image" accept="image/*"><br><br>
 
         <button type="button" onclick="generatePDF()">PDF erstellen</button>
     </form>
@@ -34,10 +34,10 @@
 
                     doc.text(`Name: ${name}`, 10, 20);
                     doc.text(`Spruch: ${quote}`, 10, 30);
-                    
-                    // Bild in PDF einfügen (PNG oder JPEG)
-                    doc.addImage(imgData, 'JPEG', 10, 50, 100, 100);
-                    
+
+                    // Universelle Bildunterstützung für verschiedene Formate
+                    doc.addImage(imgData, 'PNG', 10, 50, 100, 100);
+
                     doc.save("dokument.pdf");
                 };
                 reader.readAsDataURL(imageInput.files[0]);
